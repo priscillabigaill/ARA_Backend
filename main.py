@@ -1,23 +1,17 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from crud import get_image, post_image
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
+from crud import get_image
+from database import get_db  # Assuming you have a function to get a DB session
 from schemas import ImageBase
-
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:5173",
-    "localhost:5173"
-]
-
-images = {}
-
 # - fetch image by its UID
 @app.get('/images/{image_id}')
-def fetch_image(image_id: int):
-    image = get_image(image_id)
+def fetch_image(image_id: int, db: Session = Depends(get_db)):
+    image = get_image(db, image_id)
     return image
+
 
 # - upload an image
 @app.post('/images/')

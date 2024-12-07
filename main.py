@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-from crud import get_image
+from crud import get_image, post_image
 from database import get_db  # Assuming you have a function to get a DB session
 from schemas import ImageBase
 
@@ -15,6 +15,6 @@ def fetch_image(image_id: int, db: Session = Depends(get_db)):
 
 # - upload an image
 @app.post('/images/')
-def upload_image(image: ImageBase):
-    image = post_image(image)
-    return image
+def upload_image(image: ImageBase, db: Session = Depends(get_db)):
+    uploaded_image = post_image(db, image)  
+    return uploaded_image

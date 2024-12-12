@@ -27,7 +27,8 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "https://ara-frontend-coral.vercel.app/"
 ]
 app.add_middleware(
     CORSMiddleware,
